@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.longs.LongSet;
 import me.cortex.nvidium.NvidiumWorldRenderer;
 import me.cortex.nvidium.gl.RenderDevice;
 import me.cortex.nvidium.sodiumCompat.IRepackagedResult;
+import me.cortex.nvidium.sodiumCompat.RepackagedSectionOutput;
 import me.cortex.nvidium.util.BufferArena;
 import me.cortex.nvidium.util.UploadingBufferStream;
 import me.jellysquid.mods.sodium.client.render.chunk.RenderSection;
