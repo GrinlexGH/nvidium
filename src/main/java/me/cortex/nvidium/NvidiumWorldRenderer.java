@@ -58,7 +58,6 @@ public class NvidiumWorldRenderer {
         this.asyncChunkTracker = asyncChunkTracker;
     }
 
-    //TODO: cleanup this spagetti
     public void enqueueRegionSort(int regionId) {
         this.renderPipeline.enqueueRegionSort(regionId);
     }
@@ -81,7 +80,7 @@ public class NvidiumWorldRenderer {
     public void renderFrame(Viewport viewport, ChunkRenderMatrices matrices, double x, double y, double z) {
         renderPipeline.renderFrame(viewport, matrices, x, y, z);
 
-        if (sectionManager.terrainAreana.getUsedMB()>(max_geometry_memory-50)) {
+        while (sectionManager.terrainAreana.getUsedMB() > (max_geometry_memory - 100)) {
             renderPipeline.removeARegion();
         }
 
@@ -111,7 +110,7 @@ public class NvidiumWorldRenderer {
         debugInfo.add(String.format("Fragmentation: %.2f", sectionManager.terrainAreana.getFragmentation()*100));
         debugInfo.add("Regions: " + sectionManager.getRegionManager().regionCount() + "/" + sectionManager.getRegionManager().maxRegions());
          */
-        debugInfo.add("Mem" + (Nvidium.SUPPORTS_PERSISTENT_SPARSE_ADDRESSABLE_BUFFER?"":" (fallback)") + ": " + this.sectionManager.terrainAreana.getAllocatedMB() + "/"+ this.max_geometry_memory + String.format(", F: %.2f", sectionManager.terrainAreana.getFragmentation()*100));
+        debugInfo.add("Mem" + (Nvidium.SUPPORTS_PERSISTENT_SPARSE_ADDRESSABLE_BUFFER?"":" (fallback)") + ": " + (Nvidium.SUPPORTS_PERSISTENT_SPARSE_ADDRESSABLE_BUFFER?this.sectionManager.terrainAreana.getAllocatedMB():this.sectionManager.terrainAreana.getUsedMB()) + "/"+ this.max_geometry_memory + String.format(", F: %.2f", sectionManager.terrainAreana.getFragmentation()*100));
         debugInfo.add("Regions: " + sectionManager.getRegionManager().regionCount() + "/" + sectionManager.getRegionManager().maxRegions());
         if (this.asyncChunkTracker != null) {
             debugInfo.add("A-BFS: " + asyncChunkTracker.getIterationTime() + " Q: " + Arrays.toString(this.asyncChunkTracker.getBuildQueueSizes()));//Async BFS iteration time:, Build queue sizes:
@@ -171,5 +170,16 @@ public class NvidiumWorldRenderer {
 
     public void setOrigin(int id, int x, int y, int z) {
         this.renderPipeline.setOrigin(id, x, y, z);
+    }
+
+    public int getAsyncBfsVisibilityCount() {
+        if (this.asyncChunkTracker != null) {
+            return this.asyncChunkTracker.getLastVisibilityCount();
+        } else {
+            return -1;
+        }
+    }
+    public int getMaxGeometryMemory() {
+        return (int) max_geometry_memory;
     }
 }

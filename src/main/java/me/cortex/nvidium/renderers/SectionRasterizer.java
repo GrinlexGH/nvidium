@@ -8,7 +8,6 @@ import net.minecraft.util.Identifier;
 import static me.cortex.nvidium.gl.shader.ShaderType.*;
 import static org.lwjgl.opengl.NVMeshShader.glDrawMeshTasksNV;
 
-//TODO:FIXME: CLEANUP
 public class SectionRasterizer extends Phase {
 
     private final Shader shader = Shader.make()

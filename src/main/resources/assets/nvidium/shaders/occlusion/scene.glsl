@@ -46,6 +46,9 @@ layout(std140, binding=0) uniform SceneData {
     //Need to basicly go in order of alignment
     //align(16)
     mat4 MVP;
+    #ifdef RENDER_FOG
+    mat4 MVPInv;
+    #endif
     ivec4 chunkPosition;
     vec4 subchunkOffset;
     vec4 fogColour;
@@ -75,6 +78,8 @@ layout(std140, binding=0) uniform SceneData {
     //uvec4 *terrainData;
 
     uint32_t *statistics_buffer;
+
+    vec2 screenSize;
 
     float fogStart;
     float fogEnd;

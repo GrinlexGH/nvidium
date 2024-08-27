@@ -2,6 +2,10 @@
   "schemaVersion": 1,
   "id": "nvidium",
   "version": "${version}",
+  "custom": {
+    "commit": "${commit}",
+    "buildtime": "${buildtime}"
+  },
   "name": "Nvidium",
   "description": "Replacement rendering engine for sodium",
   "authors": [
